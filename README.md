@@ -1,58 +1,126 @@
-# Intelligent Wealth Advisor Scraper
+# 🧠 Intelligent Wealth Advisor Scraper
 
-An intelligent web scraping tool that uses browser automation, LangChain, and Claude 4 Opus to extract wealth advisor information from UBS, Morgan Stanley, and Merrill Lynch websites.
+An AI-powered web scraper that uses Claude 4 Opus reasoning and automatic URL discovery to extract wealth advisor information from UBS, Morgan Stanley, and Merrill Lynch websites.
 
-## Features
+## 🚀 NEW: Intelligent Features
 
-- 🧠 **LLM-Powered Intelligence**: Uses Claude 4 Opus for smart decision making
-- 🌐 **Multi-Company Support**: UBS, Morgan Stanley, Merrill Lynch
-- 🗺️ **Multi-State Scraping**: Covers 19 US states including NY, CA, FL, TX
-- 🛡️ **Robust Error Handling**: Retry logic, partial data saving, comprehensive logging
-- 📊 **Smart Data Extraction**: Extracts name, phone, address, email automatically
+### 🔍 **Automatic URL Discovery**
+- **Problem Solved**: No more 404 errors or broken URLs!
+- Uses Google search + Claude Opus reasoning to find current working advisor directory URLs
+- Self-healing when websites change their structure
+- Automatically updates and saves working URLs for future use
 
-## Quick Start
+### 🧠 **Smart Navigation**
+- Claude analyzes each webpage to understand navigation patterns
+- Adapts to different website designs automatically
+- Intelligent form filling and search execution
+- Handles complex multi-step navigation flows
 
-1. **Setup Environment**:
+### 📊 **Enhanced Data Extraction**
+- Claude Opus for superior advisor information extraction
+- Handles different page layouts and designs
+- Extracts: name, phone, street, city, state, email
+- Smart pagination detection and handling
+
+## ⚡ Quick Start
+
+1. **Get Your Claude API Key**: https://console.anthropic.com/
+2. **Setup**:
    ```bash
    cd ~/Downloads/code/web_scraper
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   playwright install chromium
+   # Edit .env file and add your API key
+   nano .env
    ```
-
-2. **Configure API Key**:
+3. **Run**:
    ```bash
-   cp .env.template .env
-   # Edit .env and add your Claude API key
+   ./launch.sh test      # Intelligent test mode
+   ./launch.sh discover  # Test URL discovery
+   ./launch.sh full      # Full intelligent scrape
    ```
 
-3. **Run Test**:
-   ```bash
-   python example_usage.py --mode test
-   ```
+## 🎯 Usage Examples
 
-4. **Full Scrape**:
-   ```bash
-   python example_usage.py --mode full
-   ```
+```bash
+# Test intelligent scraper (recommended first run)
+./launch.sh test
 
-## Usage Examples
+# Test URL discovery for all companies
+./launch.sh discover
 
-- **Test with one state**: `python example_usage.py --mode test`
-- **Full scrape**: `python example_usage.py --mode full`
-- **Specific states**: `python example_usage.py --mode specific --states "New York" "California"`
+# Full scrape with intelligent adaptation
+./launch.sh full
 
-## Output
+# Specific states with intelligent mode
+./launch.sh specific "New York" "California" "Texas"
 
-Data is saved in both CSV and JSON formats with timestamps.
+# Fallback to simple mode if needed
+./launch.sh simple
+```
 
-## Legal Notice
+## 🌐 Target Companies & Coverage
 
-⚠️ **Important**: Ensure compliance with website Terms of Service and applicable laws before scraping.
+- **UBS**: Financial advisor directory
+- **Morgan Stanley**: Advisor search portal  
+- **Merrill Lynch**: Advisor locator
 
-## Requirements
+**States Covered**: NY, NJ, FL, TX, CA, IL, MA, GA, WA, DC, VA, MD, MI, CT, PA, NC, OH, RI, MN
 
-- Python 3.8+
-- Claude API key
-- Chrome/Chromium browser
+## 🛡️ Intelligent Error Handling
+
+- **404 Detection**: Automatically discovers new working URLs
+- **Rate Limiting**: Respectful delays between requests
+- **Partial Recovery**: Saves data if interrupted
+- **Comprehensive Logging**: Detailed execution logs
+
+## 📊 Output Formats
+
+- **CSV**: Structured data for analysis
+- **JSON**: Machine-readable format
+- **Discovered URLs**: Working URLs for future use
+- **Execution Logs**: Detailed operation history
+
+## ⚠️ Legal & Ethical Use
+
+- **Terms of Service**: Ensure compliance with website ToS
+- **Rate Limiting**: Built-in delays to respect servers
+- **Data Protection**: Consider GDPR/CCPA requirements
+- **Professional Use**: Verify licensing regulations
+
+## 🔧 Configuration
+
+Edit `.env` file to customize:
+- `CLAUDE_API_KEY`: Your Anthropic API key
+- `HEADLESS_MODE`: Browser visibility (true/false)
+- `MIN_DELAY` / `MAX_DELAY`: Rate limiting settings
+- `MAX_PAGES_PER_STATE`: Pagination limits
+
+## 🆘 Troubleshooting
+
+**API Key Issues**:
+```bash
+# Check your .env file
+cat .env
+# Make sure CLAUDE_API_KEY is set correctly
+```
+
+**Browser Issues**:
+```bash
+# Reinstall browser
+source venv/bin/activate
+playwright install chromium
+```
+
+**URL Discovery Problems**:
+```bash
+# Test URL discovery only
+./launch.sh discover
+```
+
+## 📈 Performance
+
+- **Smart Caching**: Discovered URLs are cached
+- **Adaptive Pagination**: Handles different pagination styles
+- **Error Recovery**: Continues on individual page failures
+- **Resource Efficient**: Closes browsers properly
+
+Built with ❤️ using Claude 4 Opus, Playwright, and Python
