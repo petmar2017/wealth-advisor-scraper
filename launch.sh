@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Intelligent Wealth Advisor Scraper Launch Script
+# Enhanced Intelligent Wealth Advisor Scraper Launch Script
 
 echo "🧠 INTELLIGENT WEALTH ADVISOR SCRAPER"
 echo "======================================"
-echo "✨ Now with Claude-powered URL discovery!"
+echo "✨ Now with CAPTCHA detection & handling!"
 
 # Check if virtual environment exists
 if [ ! -d "venv" ]; then
@@ -33,10 +33,21 @@ fi
 echo "✅ Environment ready!"
 echo ""
 echo "🚀 AVAILABLE MODES:"
-echo "  🧪 test      - Quick test with intelligent URL discovery"
-echo "  🔍 discover  - Test URL discovery for all companies"
-echo "  🌐 full      - Full intelligent scrape (all companies/states)"
-echo "  🎯 specific  - Intelligent scrape for specific states"
+echo "  🧪 test         - Quick test with intelligent features"
+echo "  🔍 discover     - Test URL discovery for all companies"  
+echo "  🌐 full         - Full intelligent scrape (all companies/states)"
+echo "  🎯 specific     - Intelligent scrape for specific states"
+echo "  🧩 captcha-test - Test CAPTCHA detection capabilities"
+echo "  🛡️  captcha      - Full scrape with CAPTCHA handling"
+echo "  📝 simple       - Fallback to basic scraper"
+echo ""
+echo "🧩 CAPTCHA & BLOCKING FEATURES:"
+echo "  • Automatic CAPTCHA detection using Claude Opus"
+echo "  • 30-second wait for manual CAPTCHA solving"
+echo "  • Rate limiting and access denial detection"
+echo "  • Cloudflare protection handling"
+echo "  • JavaScript challenge detection"
+echo "  • Smart retry mechanisms"
 echo ""
 echo "🧠 INTELLIGENT FEATURES:"
 echo "  • Automatic working URL discovery via Google + Claude"
@@ -67,6 +78,30 @@ elif [ "$1" = "specific" ]; then
         echo "🎯 Running intelligent scrape for default states..."
         python run_intelligent.py --mode specific
     fi
+elif [ "$1" = "captcha-test" ]; then
+    echo "🧩 Running CAPTCHA detection test..."
+    python run_captcha_aware.py --mode captcha-test
+elif [ "$1" = "captcha" ]; then
+    shift
+    if [ "$1" = "test" ]; then
+        echo "🧩 Running CAPTCHA-aware test..."
+        python run_captcha_aware.py --mode test
+    elif [ "$1" = "full" ]; then
+        echo "🛡️  Running full CAPTCHA-aware scrape..."
+        python run_captcha_aware.py --mode full
+    elif [ "$1" = "specific" ]; then
+        shift
+        if [ $# -gt 0 ]; then
+            echo "🎯 Running CAPTCHA-aware scrape for specific states: $@"
+            python run_captcha_aware.py --mode specific --states "$@"
+        else
+            echo "🎯 Running CAPTCHA-aware scrape for default states..."
+            python run_captcha_aware.py --mode specific
+        fi
+    else
+        echo "🧩 Running CAPTCHA-aware test (default)..."
+        python run_captcha_aware.py --mode test
+    fi
 elif [ "$1" = "simple" ]; then
     # Fallback to simple scraper
     echo "📝 Running simple scraper (fallback mode)..."
@@ -80,3 +115,9 @@ echo ""
 echo "✅ Scraping session completed!"
 echo "📄 Check the generated CSV/JSON files for results"
 echo "📋 Check logs/ directory for detailed execution logs"
+echo ""
+echo "💡 TIPS:"
+echo "  • Use 'captcha' mode for websites with heavy protection"
+echo "  • Set HEADLESS_MODE=False in .env to solve CAPTCHAs manually"
+echo "  • Check discovered_urls_*.json for working URL cache"
+echo "  • Review logs for CAPTCHA encounter statistics"

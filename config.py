@@ -18,6 +18,12 @@ class ScraperConfig:
     MAX_DELAY = float(os.getenv('MAX_DELAY', '5.0'))
     PAGE_DELAY = float(os.getenv('PAGE_DELAY', '10.0'))
     
+    # CAPTCHA & Blocking Handling
+    CAPTCHA_WAIT_TIME = int(os.getenv('CAPTCHA_WAIT_TIME', '30'))
+    CAPTCHA_MAX_RETRIES = int(os.getenv('CAPTCHA_MAX_RETRIES', '3'))
+    RATE_LIMIT_WAIT_TIME = int(os.getenv('RATE_LIMIT_WAIT_TIME', '60'))
+    ACCESS_DENIED_WAIT_TIME = int(os.getenv('ACCESS_DENIED_WAIT_TIME', '120'))
+    
     # Output settings
     OUTPUT_DIRECTORY = os.getenv('OUTPUT_DIRECTORY', './scraped_data')
     SAVE_FORMAT = os.getenv('SAVE_FORMAT', 'both')  # csv, json, or both
@@ -33,3 +39,8 @@ class ScraperConfig:
     
     # Companies to scrape
     TARGET_COMPANIES = os.getenv('TARGET_COMPANIES', 'UBS,Morgan Stanley,Merrill Lynch').split(',')
+    
+    # Advanced CAPTCHA Settings
+    AUTO_SOLVE_SIMPLE_CAPTCHAS = os.getenv('AUTO_SOLVE_SIMPLE_CAPTCHAS', 'false').lower() == 'true'
+    MANUAL_CAPTCHA_SOLVING = os.getenv('MANUAL_CAPTCHA_SOLVING', 'true').lower() == 'true'
+    CAPTCHA_DETECTION_SENSITIVITY = os.getenv('CAPTCHA_DETECTION_SENSITIVITY', 'high').lower()

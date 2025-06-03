@@ -1,26 +1,29 @@
 # 🧠 Intelligent Wealth Advisor Scraper
 
-An AI-powered web scraper that uses Claude 4 Opus reasoning and automatic URL discovery to extract wealth advisor information from UBS, Morgan Stanley, and Merrill Lynch websites.
+An AI-powered web scraper that uses Claude 4 Opus reasoning, automatic URL discovery, and **CAPTCHA detection & handling** to extract wealth advisor information from UBS, Morgan Stanley, and Merrill Lynch websites.
 
-## 🚀 NEW: Intelligent Features
+## 🚀 NEW: CAPTCHA & Blocking Protection
 
-### 🔍 **Automatic URL Discovery**
-- **Problem Solved**: No more 404 errors or broken URLs!
-- Uses Google search + Claude Opus reasoning to find current working advisor directory URLs
+### 🧩 **Automatic CAPTCHA Detection**
+- **Problem Solved**: No more stuck sessions on CAPTCHA pages!
+- Uses Claude Opus to detect CAPTCHAs, rate limiting, and blocking mechanisms
+- Handles: reCAPTCHA, hCaptcha, Cloudflare protection, access denied pages
+- **30-second automatic wait** for manual CAPTCHA solving
+- Smart retry logic with progressive delays
+
+### 🛡️ **Comprehensive Blocking Detection**
+- **CAPTCHA challenges** (all types)
+- **Rate limiting** messages
+- **Access denied** or blocked pages
+- **Cloudflare protection** pages
+- **JavaScript challenges**
+- **"Please verify you are human"** interstitials
+
+### 🔍 **Intelligent URL Discovery**
+- Automatic URL discovery using Google search + Claude reasoning
 - Self-healing when websites change their structure
-- Automatically updates and saves working URLs for future use
-
-### 🧠 **Smart Navigation**
-- Claude analyzes each webpage to understand navigation patterns
-- Adapts to different website designs automatically
-- Intelligent form filling and search execution
-- Handles complex multi-step navigation flows
-
-### 📊 **Enhanced Data Extraction**
-- Claude Opus for superior advisor information extraction
-- Handles different page layouts and designs
-- Extracts: name, phone, street, city, state, email
-- Smart pagination detection and handling
+- Smart navigation adaptation for different site designs
+- Working URL caching for future sessions
 
 ## ⚡ Quick Start
 
@@ -31,31 +34,49 @@ An AI-powered web scraper that uses Claude 4 Opus reasoning and automatic URL di
    # Edit .env file and add your API key
    nano .env
    ```
-3. **Run**:
+3. **Run with CAPTCHA protection**:
    ```bash
-   ./launch.sh test      # Intelligent test mode
-   ./launch.sh discover  # Test URL discovery
-   ./launch.sh full      # Full intelligent scrape
+   ./launch.sh captcha test      # CAPTCHA-aware test
+   ./launch.sh captcha full      # Full scrape with CAPTCHA handling
+   ./launch.sh captcha-test      # Test CAPTCHA detection only
    ```
 
 ## 🎯 Usage Examples
 
 ```bash
-# Test intelligent scraper (recommended first run)
-./launch.sh test
+# CAPTCHA-AWARE MODES (Recommended for financial sites)
+./launch.sh captcha test                    # Test with CAPTCHA handling
+./launch.sh captcha full                    # Full scrape with CAPTCHA protection
+./launch.sh captcha specific "New York"     # Specific states with CAPTCHA handling
+./launch.sh captcha-test                    # Test CAPTCHA detection capabilities
 
-# Test URL discovery for all companies
-./launch.sh discover
+# INTELLIGENT MODES
+./launch.sh test                            # Intelligent test with URL discovery
+./launch.sh discover                        # Test URL discovery only
+./launch.sh full                            # Full intelligent scrape
+./launch.sh specific "NY" "CA" "TX"         # Specific states intelligent mode
 
-# Full scrape with intelligent adaptation
-./launch.sh full
-
-# Specific states with intelligent mode
-./launch.sh specific "New York" "California" "Texas"
-
-# Fallback to simple mode if needed
-./launch.sh simple
+# BASIC MODE
+./launch.sh simple                          # Fallback to basic scraper
 ```
+
+## 🧩 CAPTCHA Handling Features
+
+### **Automatic Detection**
+- Analyzes page content to identify blocking mechanisms
+- Detects various CAPTCHA types and protection systems
+- Provides confidence scores and detailed descriptions
+
+### **Smart Response**
+- **CAPTCHAs**: 30-second wait with manual solving option
+- **Rate Limiting**: Progressive delays (60+ seconds)
+- **Access Denied**: Extended waits (120+ seconds)
+- **Retry Logic**: Multiple attempts with different approaches
+
+### **Manual Integration**
+- Set `HEADLESS_MODE=False` to see browser and solve CAPTCHAs manually
+- Visual countdown timers during wait periods
+- Clear status messages about blocking type and action needed
 
 ## 🌐 Target Companies & Coverage
 
@@ -65,62 +86,99 @@ An AI-powered web scraper that uses Claude 4 Opus reasoning and automatic URL di
 
 **States Covered**: NY, NJ, FL, TX, CA, IL, MA, GA, WA, DC, VA, MD, MI, CT, PA, NC, OH, RI, MN
 
-## 🛡️ Intelligent Error Handling
+## 🔧 Configuration
 
-- **404 Detection**: Automatically discovers new working URLs
-- **Rate Limiting**: Respectful delays between requests
-- **Partial Recovery**: Saves data if interrupted
-- **Comprehensive Logging**: Detailed execution logs
+Edit `.env` file to customize CAPTCHA handling:
 
-## 📊 Output Formats
+```bash
+# CAPTCHA Settings
+CAPTCHA_WAIT_TIME=30                    # Seconds to wait for CAPTCHA solving
+CAPTCHA_MAX_RETRIES=3                   # Max retry attempts
+RATE_LIMIT_WAIT_TIME=60                 # Wait time for rate limiting
+ACCESS_DENIED_WAIT_TIME=120             # Wait time for access denied
 
-- **CSV**: Structured data for analysis
+# Browser Settings  
+HEADLESS_MODE=False                     # Set to False for manual CAPTCHA solving
+CAPTCHA_DETECTION_SENSITIVITY=high     # high|medium|low
+MANUAL_CAPTCHA_SOLVING=true             # Enable manual solving
+```
+
+## 📊 Output & Monitoring
+
+### **Data Formats**
+- **CSV**: Structured advisor data
 - **JSON**: Machine-readable format
-- **Discovered URLs**: Working URLs for future use
-- **Execution Logs**: Detailed operation history
+- **Discovered URLs**: Working URL cache
+- **CAPTCHA Statistics**: Encounter logs
+
+### **Real-time Monitoring**
+- Live CAPTCHA detection alerts
+- Blocking type identification
+- Wait time countdowns
+- Success/failure statistics
+
+## 🛡️ Advanced Protection Handling
+
+### **Detection Capabilities**
+```
+✅ reCAPTCHA v2/v3          ✅ Cloudflare challenges
+✅ hCaptcha                 ✅ Rate limiting messages
+✅ Custom CAPTCHAs          ✅ Access denied pages
+✅ JavaScript challenges    ✅ "Verify human" prompts
+✅ Bot detection systems    ✅ Unusual redirects
+```
+
+### **Response Strategies**
+- **Immediate**: Smart retry with different approach
+- **Short Wait**: 30-60 seconds for rate limits
+- **Extended Wait**: 2+ minutes for access denial
+- **Manual Mode**: User interaction for complex CAPTCHAs
+- **Alternative URLs**: Discover new working endpoints
+
+## 🆘 Troubleshooting
+
+**CAPTCHA Issues**:
+```bash
+# Test CAPTCHA detection
+./launch.sh captcha-test
+
+# Run with visible browser for manual solving
+# Set HEADLESS_MODE=False in .env
+./launch.sh captcha test
+```
+
+**Persistent Blocking**:
+```bash
+# Try URL discovery mode
+./launch.sh discover
+
+# Use extended wait times
+# Increase RATE_LIMIT_WAIT_TIME in .env
+```
+
+**API Key Issues**:
+```bash
+# Verify API key
+cat .env | grep CLAUDE_API_KEY
+```
+
+## 📈 Performance & Statistics
+
+- **CAPTCHA Encounter Tracking**: Logs all blocking instances
+- **Success Rate Monitoring**: Tracks resolution effectiveness  
+- **URL Discovery Caching**: Reuses working URLs
+- **Progressive Delay Logic**: Adapts to website behavior
+- **Partial Data Recovery**: Saves progress on interruption
 
 ## ⚠️ Legal & Ethical Use
 
 - **Terms of Service**: Ensure compliance with website ToS
-- **Rate Limiting**: Built-in delays to respect servers
+- **Respectful Scraping**: Built-in delays and CAPTCHA respect
 - **Data Protection**: Consider GDPR/CCPA requirements
 - **Professional Use**: Verify licensing regulations
 
-## 🔧 Configuration
+---
 
-Edit `.env` file to customize:
-- `CLAUDE_API_KEY`: Your Anthropic API key
-- `HEADLESS_MODE`: Browser visibility (true/false)
-- `MIN_DELAY` / `MAX_DELAY`: Rate limiting settings
-- `MAX_PAGES_PER_STATE`: Pagination limits
+Built with ❤️ using Claude 4 Opus, Playwright, and intelligent automation
 
-## 🆘 Troubleshooting
-
-**API Key Issues**:
-```bash
-# Check your .env file
-cat .env
-# Make sure CLAUDE_API_KEY is set correctly
-```
-
-**Browser Issues**:
-```bash
-# Reinstall browser
-source venv/bin/activate
-playwright install chromium
-```
-
-**URL Discovery Problems**:
-```bash
-# Test URL discovery only
-./launch.sh discover
-```
-
-## 📈 Performance
-
-- **Smart Caching**: Discovered URLs are cached
-- **Adaptive Pagination**: Handles different pagination styles
-- **Error Recovery**: Continues on individual page failures
-- **Resource Efficient**: Closes browsers properly
-
-Built with ❤️ using Claude 4 Opus, Playwright, and Python
+**🧩 CAPTCHA Protection • 🔍 Smart Discovery • 🧠 AI Reasoning**
